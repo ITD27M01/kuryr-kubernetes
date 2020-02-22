@@ -175,6 +175,7 @@ class NamespaceHandler(k8s_base.ResourceEventHandler):
     @MEMOIZE
     def _check_quota(self, quota):
         os_net = clients.get_network_client()
+        project_id = os_net.get_project_id()
         resources = {'subnets': os_net.subnets,
                      'networks': os_net.networks,
                      'security_groups': os_net.security_groups}
@@ -183,7 +184,7 @@ class NamespaceHandler(k8s_base.ResourceEventHandler):
             resource_quota = quota[resource]
             if utils.has_limit(resource_quota):
                 if not utils.is_available(resource, resource_quota,
-                                          network_func):
+                                          network_func, project_id):
                     return False
         return True
 

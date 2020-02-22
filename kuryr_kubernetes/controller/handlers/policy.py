@@ -150,9 +150,10 @@ class NetworkPolicyHandler(k8s_base.ResourceEventHandler):
     @MEMOIZE
     def _check_quota(self, quota):
         os_net = clients.get_network_client()
+        project_id = os_net.get_project_id()
         if utils.has_limit(quota.security_groups):
             return utils.is_available('security_groups', quota.security_groups,
-                                      os_net.security_groups)
+                                      os_net.security_groups, project_id)
         return True
 
     def _is_service_affected(self, service, affected_pods):

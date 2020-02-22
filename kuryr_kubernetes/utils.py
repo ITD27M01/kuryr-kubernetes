@@ -220,8 +220,8 @@ def has_limit(quota):
     return quota != NO_LIMIT
 
 
-def is_available(resource, resource_quota, network_func):
-    qnt_resources = len(list(network_func()))
+def is_available(resource, resource_quota, network_func, project_id):
+    qnt_resources = len(list(network_func(project_id=project_id)))
     availability = resource_quota - qnt_resources
     if availability <= 0:
         LOG.error("Quota exceeded for resource: %s", resource)
